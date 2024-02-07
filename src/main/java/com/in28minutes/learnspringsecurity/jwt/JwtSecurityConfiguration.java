@@ -21,7 +21,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -95,6 +97,7 @@ public class JwtSecurityConfiguration {
 
     /**
      * JWT using Spring Boot's OAuth2 Resource Server - OAuth2ResourceServerConfigurer#jwt()
+     * This is for creating a Decoder
      * 1. Create KeyPair -> KeyPairGenerator
      * 2. Create RSA key object using Key Pair -> com.nimbusds.jose.jwk.RSAKey
      * 3. Create JWKSource(JSON Web Source)
@@ -137,6 +140,14 @@ public class JwtSecurityConfiguration {
         return NimbusJwtDecoder
                 .withPublicKey(rsaKey.toRSAPublicKey())
                 .build();
+    }
+
+    /**
+     * Creating Encoder for JWT
+     */
+    @Bean
+    public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
+        return new NimbusJwtEncoder(jwkSource);
     }
 
 
