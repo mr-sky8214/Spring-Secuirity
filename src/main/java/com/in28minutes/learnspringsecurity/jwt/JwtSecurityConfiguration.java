@@ -37,7 +37,7 @@ import java.util.UUID;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@Configuration
+//@Configuration
 public class JwtSecurityConfiguration {
 
     @Bean
